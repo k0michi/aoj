@@ -1,73 +1,63 @@
 #include <iostream>
+#include <numeric>
+#include <stack>
 #include <string>
-#include <tuple>
 #include <vector>
 
-std::string terrain;
-std::vector<int> floods;
+struct Flood {
+  int area;
+  int endX;
+  int y;
+};
 
-std::tuple<int, int> calculateFlood(int slopeBegin) {
-  if (terrain[slopeBegin] != '\\') {
-    return {0, -1};
-  }
+std::vector<Flood> calculateFloods(const std::string &terrain) {
+  std::stack<int> slopes;
+  std::vector<Flood> floods;
+  int y = 0;
 
-  int depth = 1;
-  int flood = 1;
-  int slopeEnd = -1;
-
-  for (int i = slopeBegin + 1; i < terrain.size(); i++) {
-    if (terrain[i] == '\\') {
-      depth++;
-    } else if (terrain[i] == '/') {
-      depth--;
+  for (int x = 0; x < terrain.size(); x++) {
+    if (terrain[x] == '\\') {
+      slopes.push(x);
+      y--;
     }
 
-    if (depth == 0 && terrain[i] == '/') {
-      flood++;
-      slopeEnd = i;
-      break;
-    }
+    if (terrain[x] == '/') {
+      y++;
 
-    flood += 2;
-  }
+      if (slopes.size() > 0) {
+        int endX = x;
+        int beginX = slopes.top();
+        slopes.pop();
+        int area = endX - beginX;
 
-  if (slopeEnd == -1) {
-    return {0, -1};
-  }
+        while (floods.size() > 0 && floods.back().endX > beginX &&
+               floods.back().y < y) {
+          area += floods.back().area;
+          floods.pop_back();
+        }
 
-  flood /= 2;
-
-  for (int i = slopeBegin + 1; i <= slopeEnd; i++) {
-    auto [floodLower, slopeLowerEnd] = calculateFlood(i);
-
-    if (floodLower > 0) {
-      flood += floodLower;
-      i = slopeLowerEnd;
+        floods.push_back({area, endX, y});
+      }
     }
   }
 
-  return {flood, slopeEnd};
+  return floods;
 }
 
 int main() {
+  std::string terrain;
   std::cin >> terrain;
-  int floodTotal = 0;
+  std::vector<Flood> floods = calculateFloods(terrain);
 
-  for (int i = 0; i < terrain.size(); i++) {
-    auto [flood, slopeEnd] = calculateFlood(i);
+  int areaSum =
+      std::accumulate(floods.begin(), floods.end(), 0,
+                      [](int s, const Flood &f) { return s + f.area; });
 
-    if (flood > 0) {
-      floodTotal += flood;
-      floods.push_back(flood);
-      i = slopeEnd;
-    }
-  }
-
-  std::cout << floodTotal << std::endl;
+  std::cout << areaSum << std::endl;
   std::cout << floods.size();
 
   for (int i = 0; i < floods.size(); i++) {
-    std::cout << ' ' << floods[i];
+    std::cout << ' ' << floods[i].area;
   }
 
   std::cout << std::endl;
