@@ -83,15 +83,13 @@ Node *getSuccessor(Node *z) {
 
     return y;
   } else {
-    Node *x = z;
-    Node *y = z->parent;
+    Node *y = z;
 
-    while (y != nullptr && y->right == x) {
-      x = y;
+    while (y->parent != nullptr && y->parent->right == y) {
       y = y->parent;
     }
 
-    return y;
+    return y->parent;
   }
 }
 
