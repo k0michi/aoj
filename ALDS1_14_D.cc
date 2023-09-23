@@ -77,12 +77,16 @@ std::vector<i32> constructSuffixArray(const std::string &string) {
 bool contains(const std::vector<i32> &suffixArray, const std::string &string,
               const std::string &pattern) {
   i32 left = 0;
-  i32 right = string.size();
+  i32 right = suffixArray.size();
 
   // Binary search
   while (left < right) {
     i32 mid = (left + right) / 2;
     i32 result = string.compare(suffixArray[mid], pattern.size(), pattern);
+
+    if (result == 0) {
+      return true;
+    }
 
     if (result < 0) {
       left = mid + 1;
@@ -91,10 +95,13 @@ bool contains(const std::vector<i32> &suffixArray, const std::string &string,
     }
   }
 
-  return string.compare(suffixArray[right], pattern.size(), pattern) == 0;
+  return false;
 }
 
 int main() {
+  std::cin.tie(nullptr);
+  std::ios_base::sync_with_stdio(false);
+
   std::string t;
   i32 q;
   std::cin >> t >> q;
