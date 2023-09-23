@@ -71,7 +71,9 @@ int main() {
       std::cout << i << std::endl;
     }
 
-    tHash = tHash * kBase + t[i + pSize] - t[i] * basePow;
+    if (i + pSize < tSize) {
+      tHash = tHash * kBase + t[i + pSize] - t[i] * basePow;
+    }
   }
 
   return 0;
