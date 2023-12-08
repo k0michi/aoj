@@ -44,7 +44,6 @@ bool lexicographicalCompare(const std::vector<i32> &a,
       // a > b
       return false;
     } else if (a[i] != b[i]) {
-      // a < b
       return a[i] < b[i];
     }
   }
