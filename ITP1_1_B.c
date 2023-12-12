@@ -1,5 +1,6 @@
 #include <ctype.h>
 #include <float.h>
+#include <inttypes.h>
 #include <limits.h>
 #include <math.h>
 #include <stdbool.h>
@@ -21,7 +22,7 @@ typedef size_t usize;
 
 int main() {
   i32 x;
-  scanf("%d", &x);
-  printf("%d\n", x * x * x);
+  scanf("%" SCNd32, &x);
+  printf("%" PRId32 "\n", x * x * x);
   return 0;
 }
