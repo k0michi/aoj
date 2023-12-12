@@ -2,9 +2,13 @@
 
 #include <algorithm>
 #include <array>
+#include <bitset>
 #include <cmath>
+#include <complex>
 #include <cstdint>
 #include <cstring>
+#include <deque>
+#include <forward_list>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -15,12 +19,16 @@
 #include <map>
 #include <numeric>
 #include <queue>
+#include <random>
 #include <set>
 #include <stack>
 #include <string>
 #include <tuple>
 #include <type_traits>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
+#include <variant>
 #include <vector>
 
 using i8 = int8_t;
