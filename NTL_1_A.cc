@@ -46,26 +46,6 @@ using f64 = double;
 
 // Preamble end
 
-bool isPrimeNumber(int x) {
-  if (x == 2) {
-    return true;
-  }
-
-  if (x < 2 || x % 2 == 0) {
-    return false;
-  }
-
-  int sqrtX = static_cast<int>(std::sqrt(x));
-
-  for (int i = 3; i <= sqrtX; i += 2) {
-    if (x % i == 0) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
 int main() {
   std::cin.tie(nullptr);
   std::ios_base::sync_with_stdio(false);
@@ -75,19 +55,21 @@ int main() {
 
   std::cout << n << ':';
 
-  if (isPrimeNumber(n)) {
-    std::cout << ' ' << n;
-  } else {
-    for (i32 i = 2; i <= n; i++) {
-      while (n % i == 0) {
-        std::cout << ' ' << i;
-        n /= i;
-      }
+  i32 sqrtN = i32(std::sqrt(n));
 
-      if (n == 1) {
-        break;
-      }
+  for (i32 i = 2; i <= sqrtN; i++) {
+    while (n % i == 0) {
+      std::cout << ' ' << i;
+      n /= i;
     }
+
+    if (n == 1) {
+      break;
+    }
+  }
+
+  if (n != 1) {
+    std::cout << ' ' << n;
   }
 
   std::cout << std::endl;
