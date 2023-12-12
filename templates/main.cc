@@ -1,4 +1,4 @@
-// Begin preamble
+// Preamble begin
 
 #include <algorithm>
 #include <array>
@@ -36,7 +36,7 @@ using usize = size_t;
 using f32 = float;
 using f64 = double;
 
-// End preamble
+// Preamble end
 
 int main() {
   std::cin.tie(nullptr);
