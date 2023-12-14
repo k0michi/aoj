@@ -293,5 +293,7 @@ int main() {
   printVector(&a, "%" PRId32);
   printf("%" PRId32 "\n", swapCount);
 
+  destroyVector(&a);
+
   return 0;
 }

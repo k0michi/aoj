@@ -372,5 +372,7 @@ int main() {
 
   printf("%" PRId32 "\n", vectorBackAs(&stack, i32));
 
+  destroyVector(&stack);
+
   return 0;
 }

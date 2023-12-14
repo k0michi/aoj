@@ -381,5 +381,9 @@ int main() {
     printf("Not stable\n");
   }
 
+  destroyVector(&cards);
+  destroyVector(&cardsBubble);
+  destroyVector(&cardsSelection);
+
   return 0;
 }
