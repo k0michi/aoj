@@ -121,26 +121,6 @@ f64 clampF64(f64 x, f64 min, f64 max) { return fmin(fmax(x, min), max); }
 
 // Preamble end
 
-bool isPrime(i32 x) {
-  if (x == 2) {
-    return true;
-  }
-
-  if (x < 2 || x % 2 == 0) {
-    return false;
-  }
-
-  i32 sqrtX = (i32)sqrt(x);
-
-  for (i32 i = 3; i <= sqrtX; i += 2) {
-    if (x % i == 0) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
 int main() {
   i32 n, r;
   scanf("%" SCNd32 "%" SCNd32, &n, &r);
