@@ -1,5 +1,8 @@
 #!/bin/bash
 
+cd `dirname $0`
+cd ..
+
 if [ $# -eq 0 ]; then
     echo "Specify a source file"
     exit 1
@@ -25,6 +28,10 @@ case "$extension" in
     "cc")
         clang++ -std=c++17 "$filename" -o "$outDir/a.out"
         "./$outDir/a.out"
+        ;;
+    "cs")
+        cp "$filename" dotnet/Program.cs
+        dotnet run --project dotnet
         ;;
     *)
         echo "Unsupported file type"
