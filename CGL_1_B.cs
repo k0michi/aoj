@@ -261,8 +261,16 @@ struct Vector2 {
 }
 
 static class MathHelper {
-  public static double Dot(Vector2 p1, Vector2 p2) {
-    return p1.X * p2.X + p1.Y * p2.Y;
+  public static double Dot(Vector2 a, Vector2 b) {
+    return a.X * b.X + a.Y * b.Y;
+  }
+
+  public static double Cross(Vector2 a, Vector2 b) {
+    return a.X * b.Y - a.Y * b.X;
+  }
+
+  public static double Length(Vector2 a) {
+    return Math.Sqrt(Dot(a, a));
   }
 
   public static double LengthSquared(Vector2 a) {
@@ -272,21 +280,56 @@ static class MathHelper {
   public static Vector2 Project(Vector2 p1, Vector2 p2, Vector2 p) {
     return p1 + Dot(p - p1, p2 - p1) * (p2 - p1) / LengthSquared(p2 - p1);
   }
+
+  public static Vector2 Normalize(Vector2 a) {
+    return a / Length(a);
+  }
+}
+
+enum Orientation {
+  OnlineFront = -2,
+  Clockwise = -1,
+  OnSegment = 0,
+  CounterClockwise = 1,
+  OnlineBack = 2
 }
 
 class Program {
-  static void Main(string[] args) {
-    Vector2 p1 = new Vector2(ConsoleScanner.NextInt32(), ConsoleScanner.NextInt32());
-    Vector2 p2 = new Vector2(ConsoleScanner.NextInt32(), ConsoleScanner.NextInt32());
+  static double kEps = 1E-10;
 
+  static Orientation Orientation(Vector2 p0, Vector2 p1, Vector2 p2) {
+    Vector2 p0p1 = p1 - p0;
+    Vector2 p0p2 = p2 - p0;
+    double cross = MathHelper.Cross(p0p1, p0p2);
+    double dot = MathHelper.Dot(p0p1, p0p2);
+
+    if (cross > kEps) {
+      return global::Orientation.CounterClockwise;
+    } else if (cross < -kEps) {
+      return global::Orientation.Clockwise;
+    } else if (dot < -kEps) {
+      return global::Orientation.OnlineBack;
+    } else if (MathHelper.LengthSquared(p0p1) < MathHelper.LengthSquared(p0p2)) {
+      return global::Orientation.OnlineFront;
+    } else {
+      return global::Orientation.OnSegment;
+    }
+  }
+
+  public static bool DoIntesect(Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3) {
+    return (int)Orientation(p0, p1, p2) * (int)Orientation(p0, p1, p3) <= 0 && (int)Orientation(p2, p3, p0) * (int)Orientation(p2, p3, p1) <= 0;
+  }
+
+  static void Main(string[] args) {
     int q = ConsoleScanner.NextInt32();
 
     for (int i = 0; i < q; ++i) {
-      Vector2 p = new Vector2(ConsoleScanner.NextInt32(), ConsoleScanner.NextInt32());
+      Vector2 p0 = new Vector2(ConsoleScanner.NextInt32(), ConsoleScanner.NextInt32());
+      Vector2 p1 = new Vector2(ConsoleScanner.NextInt32(), ConsoleScanner.NextInt32());
+      Vector2 p2 = new Vector2(ConsoleScanner.NextInt32(), ConsoleScanner.NextInt32());
+      Vector2 p3 = new Vector2(ConsoleScanner.NextInt32(), ConsoleScanner.NextInt32());
 
-      Vector2 projected = MathHelper.Project(p1, p2, p);
-      Vector2 result = p + 2 * (projected - p);
-      Console.WriteLine(string.Format("{0:f8} {1:f8}", result.X, result.Y));
+      Console.WriteLine(DoIntesect(p0, p1, p2, p3) ? 1 : 0);
     }
   }
 }
