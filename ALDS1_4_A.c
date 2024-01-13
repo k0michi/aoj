@@ -734,8 +734,6 @@ ListIterator listFind(List *list, void *value,
 
 // Preamble end
 
-bool i32Equals(void *a, void *b) { return *(i32 *)a == *(i32 *)b; }
-
 i32 linearSearch(Vector *a, i32 key) {
   i32 n = vectorSize(a);
   vectorPushBack(a, &key);
